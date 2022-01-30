@@ -1,19 +1,11 @@
 package com.revature.banking_application.entities;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import javax.el.ArrayELResolver;
-import javax.persistence.Embedded;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,12 +18,17 @@ import lombok.NoArgsConstructor;
 public class Users{
 	
 	@Id
-	@OneToOne(mappedBy = "customerID")
-	Long userID;
+	@Column(name = "UserId")
+	private Long userID;
 	
-	String password;
-	@Embedded
-	Role role;
+	private String password;
+	
+	@OneToOne()
+	@JoinColumn(name = "roleId", referencedColumnName = "id")
+	private UserRole userRole;
 	
 	Boolean verified;
+	
+	@OneToOne(mappedBy = "user")
+	private BankCustomers customer;
 }

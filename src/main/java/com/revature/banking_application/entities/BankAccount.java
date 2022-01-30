@@ -3,6 +3,7 @@ package com.revature.banking_application.entities;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
@@ -15,9 +16,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BankAccount {
 	
-	
+	@Id
 	Long accountID;
-	Long customerID;
+	Long customerId;
 	
 	Double currentBalance;
 	

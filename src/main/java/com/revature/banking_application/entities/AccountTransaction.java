@@ -3,6 +3,7 @@ package com.revature.banking_application.entities;
 import java.sql.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,10 +18,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class AccountTransaction {
 	@Id
 	@Column(name = "transactionID")
-	@GenericGenerator(name = "transaction_id", strategy = "com.revature.banking_application.generator")
+	@GenericGenerator(name = "transaction_id", strategy = "com.revature.banking_application.generator.TransactionIdGenerator")
 	@GeneratedValue(generator = "transaction_id")
 	Long transactionID;
 	Long referenceNumber;

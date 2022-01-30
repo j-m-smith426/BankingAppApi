@@ -19,7 +19,7 @@ public class TransactionIdGenerator implements IdentifierGenerator {
 		
 		try {
 			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select count(transactionID) as Id from AccountTransaction");
+			ResultSet rs = statement.executeQuery("select max(transactionID) as Id from AccountTransaction");
 			
 			if(rs.next()) {
 				int id = rs.getInt(1)+105;

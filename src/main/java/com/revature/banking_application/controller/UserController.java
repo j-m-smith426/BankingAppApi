@@ -40,5 +40,14 @@ public class UserController {
 		}
 	}
 	
+	@PostMapping("/register")
+	public ResponseEntity<Users> addUser(@RequestBody Users user) throws Exception{
+		Users savedUsers = userService.saveUser(user);
+		if(savedUsers != null) {
+			return new ResponseEntity<Users>(user, HttpStatus.OK);
+		}else {
+			throw new Exception("Error adding User to database");
+		}
+	}
 	
 }

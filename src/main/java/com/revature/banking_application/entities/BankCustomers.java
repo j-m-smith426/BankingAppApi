@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,8 +19,9 @@ public class BankCustomers {
 	Long customerUniqueID;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "customer_id", referencedColumnName = "user_id")
-	Long customerID;
+	@JoinColumn(name = "customerId", referencedColumnName = "UserId")
+	Users user;
+	
 	String name;
 	Integer postal;
 	String email;
