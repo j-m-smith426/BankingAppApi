@@ -37,6 +37,7 @@ public class UserService {
 		if(optionalUser.get() != null) {
 			Users retrievedUser = optionalUser.get();
 			retrievedUser.setPassword(updatedPassword);
+			retrievedUser.setVerified(true);
 			Users updatedUser = userRepository.save(retrievedUser);
 			return updatedUser;
 			
