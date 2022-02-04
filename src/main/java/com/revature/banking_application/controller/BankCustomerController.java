@@ -2,6 +2,7 @@ package com.revature.banking_application.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,14 +13,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.banking_application.entities.BankCustomers;
+import com.revature.banking_application.exception.InvalidCustomer;
 import com.revature.banking_application.service.BankCustomerService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/customer")
 public class BankCustomerController {
 	private BankCustomerService customerService;
 	
 	
+	public BankCustomerController(BankCustomerService customerService) {
+		this.customerService = customerService;
+	}
+
 	//get
 	@GetMapping("/{customerId}")
 	public ResponseEntity<BankCustomers> getCustomerByID(@PathVariable Long customerId) throws Exception {
@@ -27,7 +34,7 @@ public class BankCustomerController {
 		if(customer != null) {
 			return new ResponseEntity<>(customer, HttpStatus.OK);
 		}else {
-			throw new Exception("Customer dose not exist");
+			throw new InvalidCustomer("Customer dose not exist");
 		}
 	}
 	
@@ -43,23 +50,18 @@ public class BankCustomerController {
 	//add
 	@PostMapping("/add")
 	public ResponseEntity<BankCustomers> addNewCustomer(@RequestBody BankCustomers customer) throws Exception{
+		
 		BankCustomers savedCustomer = customerService.saveCustomer(customer);
-		if(savedCustomer != null) {
+		
 			return new ResponseEntity<>(savedCustomer, HttpStatus.OK);
-		}else {
-			throw new Exception("Error adding Customer");
-		}
 	}
 	
 	//update
 	@PutMapping("/update")
 	public ResponseEntity<BankCustomers> updateCustomer(@RequestBody BankCustomers customer) throws Exception{
 		BankCustomers savedCustomer = customerService.updateCustomer(customer);
-		if(savedCustomer != null) {
 			return new ResponseEntity<>(savedCustomer, HttpStatus.OK);
-		}else {
-			throw new Exception("Error adding Customer");
-		}
+		
 	}
 	
 	//delete

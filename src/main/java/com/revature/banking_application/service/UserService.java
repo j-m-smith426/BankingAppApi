@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.revature.banking_application.entities.Users;
+import com.revature.banking_application.exception.IllegalUserCredentials;
 import com.revature.banking_application.repository.UserRepository;
 @Service
 public class UserService {
@@ -16,15 +17,19 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public Users verifyUser(Long username, String password) {
+	public Users verifyUser(Long username, String password) throws IllegalUserCredentials {
 		Optional<Users> user = userRepository.findById(username);
 		if(user.get() != null) {
 			Users retrievedUser = user.get();
 			if(retrievedUser.getPassword().contentEquals(password)) {
 				return retrievedUser;
+			}else {
+				throw new IllegalUserCredentials("Password dose not match");
 			}
+		}else {
+			throw new IllegalUserCredentials("UserId not found");
 		}
-		return null;
+		
 	}
 
 	public Users updatePassword(Users user, String updatedPassword) {

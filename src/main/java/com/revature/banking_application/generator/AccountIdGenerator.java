@@ -10,7 +10,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
-public class TransactionIdGenerator implements IdentifierGenerator {
+public class AccountIdGenerator implements IdentifierGenerator {
 
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
@@ -19,18 +19,16 @@ public class TransactionIdGenerator implements IdentifierGenerator {
 		
 		try {
 			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select max(transactionID) as Id from Account_Transaction");
+			ResultSet rs = statement.executeQuery("select max(accountID) as Id from Bank_Account");
 			
 			if(rs.next()) {
-				int id = rs.getInt(1)+105;
-				Integer randInteger = (int) (Math.random() * 100);
-				String result = "" + new Integer(id).toString() + randInteger.toString();
-				Long generatedId = Long.valueOf(result);
+				int id = rs.getInt(1)+100;
+				if(id < 1000000000)
+					id += 1000000000;
+				
+				Long generatedId = (long) id;
 				return generatedId;
 							
-			}else {
-				Long base = 100000l;
-				return base;
 			}
 		}
 		catch (SQLException e) {

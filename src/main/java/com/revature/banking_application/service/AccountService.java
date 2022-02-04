@@ -6,14 +6,19 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.revature.banking_application.entities.BankAccount;
+import com.revature.banking_application.entities.BankCustomers;
+import com.revature.banking_application.exception.InvalidAccountException;
 import com.revature.banking_application.repository.BankAccountRepository;
+import com.revature.banking_application.repository.BankCustomerRepository;
 @Service
 public class AccountService {
 	private BankAccountRepository accountRepository;
+	private  BankCustomerService customerService;
 
-	public AccountService(BankAccountRepository accountRepository) {
+	public AccountService(BankAccountRepository accountRepository,  BankCustomerService customerService) {
 		super();
 		this.accountRepository = accountRepository;
+		this.customerService = customerService;
 	}
 
 	public BankAccount getById(Long id) throws Exception {
@@ -32,9 +37,16 @@ public class AccountService {
 		
 	}
 
-	public BankAccount addAccount(BankAccount account) {
+	public BankAccount addAccount(BankAccount account) throws InvalidAccountException {
+		try {
+		BankCustomers customer = customerService.findByCustomerId(account.getCustomer().getUser().getUserID());
+		account.setCustomer(customer);
 		BankAccount savedAccount = accountRepository.save(account);
 		return savedAccount;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new InvalidAccountException("Error creating account");
+		}
 		
 	}
 

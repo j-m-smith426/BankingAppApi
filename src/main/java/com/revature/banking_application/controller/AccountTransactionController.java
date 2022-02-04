@@ -1,9 +1,12 @@
 package com.revature.banking_application.controller;
 
+import java.sql.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,12 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.banking_application.entities.AccountTransaction;
 import com.revature.banking_application.service.TransactionService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/transaction")
 public class AccountTransactionController {
 	
@@ -80,5 +85,15 @@ public class AccountTransactionController {
 			return new ResponseEntity<AccountTransaction>(HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	
+	//find by account between dates
+	@GetMapping("/account/dates/{account}")
+	public ResponseEntity<List<AccountTransaction>> getTransactionsByAccountBetweenDates(@PathVariable Long account, @RequestParam(value = "begin", required = true) Date begin, @RequestParam(value = "end", required = true) Date end){
+		try {
+			List<AccountTransaction> transactions = transactionService.getAllByAccountBetweenDates(account, begin, end);
+			return new ResponseEntity<List<AccountTransaction>>(transactions, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<List<AccountTransaction>>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }

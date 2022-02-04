@@ -3,14 +3,18 @@ package com.revature.banking_application.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.banking_application.entities.Users;
+import com.revature.banking_application.exception.IllegalUserCredentials;
+import com.revature.banking_application.proxies.LoginProxy;
 import com.revature.banking_application.service.UserService;
 
 @RestController
+@CrossOrigin
 public class UserController {
 	UserService userService;
 
@@ -20,12 +24,12 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<Users> login(@RequestBody Long username, @RequestBody String password) throws Exception{
-		Users user = userService.verifyUser(username, password);
+	public ResponseEntity<Users> login(@RequestBody LoginProxy login) throws Exception{
+		Users user = userService.verifyUser(login.getUsername(), login.getPassword());
 		if(user != null) {
 			return new ResponseEntity<Users>(user, HttpStatus.OK);
 		}else {
-			throw new Exception("Credentials do not match");
+			throw new IllegalUserCredentials("Credentials do not match");
 		}
 		
 	}
@@ -36,7 +40,7 @@ public class UserController {
 		if(result != null) {
 			return new ResponseEntity<Users>(result, HttpStatus.OK);
 		}else {
-			throw new Exception("User not found");
+			throw new IllegalUserCredentials("User not found");
 		}
 	}
 	
@@ -46,7 +50,7 @@ public class UserController {
 		if(savedUsers != null) {
 			return new ResponseEntity<Users>(user, HttpStatus.OK);
 		}else {
-			throw new Exception("Error adding User to database");
+			throw new IllegalUserCredentials("Error adding User to database");
 		}
 	}
 	
