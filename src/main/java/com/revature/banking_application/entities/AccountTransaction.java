@@ -36,7 +36,6 @@ public class AccountTransaction {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id", nullable = false)
-	@JsonIgnore
 	BankAccount associatedAccount;
 	
 //	public AccountTransaction (Long reference, String type, String subtype, Double currentBal ) {

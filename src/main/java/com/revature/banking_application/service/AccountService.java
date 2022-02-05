@@ -39,7 +39,8 @@ public class AccountService {
 
 	public BankAccount addAccount(BankAccount account) throws InvalidAccountException {
 		try {
-		BankCustomers customer = customerService.findByCustomerId(account.getCustomer().getUser().getUserID());
+		BankCustomers customer = customerService.findById(account.getCustomer().getCustomerUniqueID());
+//		System.out.print(customer);
 		account.setCustomer(customer);
 		BankAccount savedAccount = accountRepository.save(account);
 		return savedAccount;

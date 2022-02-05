@@ -5,7 +5,7 @@ import java.util.Random;
 public class PasswordGenerator {
 	public static String generateRandomPassword() {
 		String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk"
-		          +"lmnopqrstuvwxyz!@#$%&";
+		          +"lmnopqrstuvwxyz!$";
 				Random rnd = new Random();
 				int len = 10;
 				StringBuilder sb = new StringBuilder(len);

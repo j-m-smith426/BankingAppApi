@@ -41,6 +41,7 @@ public class TransactionService {
 
 	public AccountTransaction saveTransaction(AccountTransaction transaction) throws InvalidTransaction {
 		try {
+			System.out.println(transaction);
 			BankAccount account = accountService.getById(transaction.getAssociatedAccount().getAccountID());
 			account.setCurrentBalance(transaction.getCurrentBalance());
 			transaction.setAssociatedAccount(account);
